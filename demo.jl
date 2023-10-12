@@ -4,9 +4,7 @@ using Plots
 
 const ⊗ = kron
 
-H = (1 / √2) * [1 1; 1 -1]
-X = [0 1; 1 0]
-I = [1 0; 0 1]
+
 
 C(U) =  [[I; zeros(2, 2)];;[zeros(2, 2); U]]
 

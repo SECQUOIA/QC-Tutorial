@@ -1,0 +1,7 @@
+name = "QCTutorial"
+uuid = "f357cca8-9b45-46c3-8b40-78f6809823ec"
+authors = ["Pedro Maciel Xavier <pedroxavier@psr-inc.com>"]
+version = "0.1.0"
+
+[deps]
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
