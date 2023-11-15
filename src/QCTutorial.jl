@@ -22,7 +22,7 @@ end
 function Ket(v::AbstractVector{T}) where {T<:Number}
     @assert ispow2(length(v))
 
-    return Ket(convert(Vector{ℂ}, v))
+    return Ket(collect(ℂ, v))
 end
 
 struct Bra <: State
@@ -32,14 +32,14 @@ end
 function Bra(v::Adjoint{T,V}) where {T<:Number,V<:AbstractVector{T}}
     @assert ispow2(length(v))
 
-    return Bra(adjoint(convert(Vector{ℂ}, v)))
+    return Bra(adjoint(collect(ℂ, vec(v))))
 end
 
 vector(ψ::Ket) = ψ.vector
 vector(ψ::Bra) = ψ.vector
 
-adjoint(ψ::Ket) = Bra(vector(ψ)')
-adjoint(ψ::Bra) = Ket(vector(ψ)')
+Base.adjoint(ψ::Ket) = Bra(vector(ψ)')
+Base.adjoint(ψ::Bra) = Ket(vector(ψ)')
 
 function Base.length(ψ::State)
     return length(vector(ψ))
@@ -66,7 +66,7 @@ function Bra(k::Integer, n::Integer = 1)
 
     v[k + 1] = 1
 
-    return Bra(v)
+    return Bra(adjoint(v))
 end
 
 function Ket(s::AbstractString)
@@ -276,6 +276,10 @@ function Base.:(*)(ϕ::Bra, ψ::Ket)
     return vector(ϕ) * vector(ψ)
 end
 
+function Base.:(*)(ϕ::Ket, ψ::Bra)
+    return Gate(vector(ϕ) * vector(ψ))
+end
+
 function Base.:(*)(U::Gate, ψ::Ket)
     return Ket(U.matrix * vector(ψ))
 end
@@ -336,12 +340,12 @@ function shift(n::Integer)
         
         if i > 0
             δ₋ = Ket(i-1, m) # |i-1⟩
-            Δ₋ .+= (δ₋ ∧ δᵢ).matrix
+            Δ₋ .+= (δ₋ * δᵢ).matrix
         end
         
         if i < n - 1
             δ₊ = Ket(i+1, m) # |i+1⟩
-            Δ₊ .+= (δ₊ ∧ δᵢ).matrix
+            Δ₊ .+= (δ₊ * δᵢ).matrix
         end
     end
         
