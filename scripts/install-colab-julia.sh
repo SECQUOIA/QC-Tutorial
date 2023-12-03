@@ -36,7 +36,7 @@ function install-colab-julia {
 
             @info "Installing kernel...";
             IJulia.installkernel(
-                "Julia*",
+                "Colab Julia",
                 "--project=/content";
                 env = Dict("JULIA_NUM_THREADS"=>"'"$JULIA_NUM_THREADS"'")
             );
