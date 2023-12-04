@@ -28,7 +28,14 @@ function install-colab-julia {
             Pkg.activate("/content");
             Pkg.instantiate(; io = devnull);
 
-            Pkg.add(url="https://github.com/SECQUOIA/QC-Tutorial")
+            Pkg.add(url="https://github.com/SECQUOIA/QC-Tutorial");
+            Pkg.add("Conda");
+
+            @info "Installing Jupyter WebIO extension...";
+            using Conda;
+
+            Conda.pip_interop(true);
+            Conda.pip("install", "webio_jupyter_extension");
 
             @info "Installing IJulia...";
             Pkg.activate();
