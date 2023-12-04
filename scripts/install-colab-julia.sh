@@ -28,6 +28,8 @@ function install-colab-julia {
             Pkg.activate("/content");
             Pkg.instantiate(; io = devnull);
 
+            Pkg.add(url="https://github.com/SECQUOIA/QC-Tutorial")
+
             @info "Installing IJulia...";
             Pkg.activate();
             Pkg.add("IJulia"; io = devnull);
